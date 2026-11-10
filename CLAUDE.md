@@ -6,8 +6,10 @@ changed something future sessions should know about.
 
 ## Project status
 
-- **State:** First working version (v0.1.0). Not yet run inside real
-  Electron on a real desktop; logic is unit-tested and OCR was tested in Node.
+- **State:** First working version (v0.1.0), merged into `main`. Tested end
+  to end in real Electron on a virtual Linux screen (Xvfb): it captured the
+  screen, found a fake quest dialog and spoke it. Not yet tried by the owner
+  on Windows/macOS with real voices.
 - **Purpose (owner-confirmed):** Desktop app that takes screenshots, detects
   when there's enough text on screen to be a quest (e.g. a game quest
   dialog), and reads it aloud. User picks the narrator voice: woman, man or
@@ -83,9 +85,9 @@ Leave short notes for the next session: what you finished, what's half-done,
 and any gotchas. Newest first. Delete notes once they're no longer relevant.
 
 - **2026-11-10:** Built v0.1.0 with the voice picker (woman / man / old man).
-  Electron's binary couldn't download in the cloud sandbox, so the app hasn't
-  been launched in Electron yet; owner should run `npm start` and report
-  back. Known gaps: the app's own window is on screen and gets OCR'd too
+  Ran end to end in Electron under `xvfb-run` (Electron's binary download
+  can fail in the sandbox; retry with `node node_modules/electron/install.js`).
+  The sandbox has no OS voices, so real voice quality is untested. Known gaps: the app's own window is on screen and gets OCR'd too
   (re-reads are prevented by the "already read" check); no capture-region
   picker; no installer/packaging yet. Windows' built-in voices sound robotic –
   see README for better ones.
