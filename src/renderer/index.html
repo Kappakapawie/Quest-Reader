@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'">
+  <title>Quest Reader</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Quest Reader</h1>
+    <p class="status" id="status">Not watching</p>
+  </header>
+
+  <section class="panel">
+    <h2>Narrator voice</h2>
+    <p class="hint">Who reads the quest out loud. Uses the voices on this computer, most human-sounding first.</p>
+    <div class="voices" id="voices" role="radiogroup" aria-label="Narrator voice"></div>
+  </section>
+
+  <section class="panel">
+    <div class="buttons">
+      <button id="watch" class="primary">Start watching screen</button>
+      <button id="again" disabled>Read again</button>
+      <button id="stop">Stop talking</button>
+    </div>
+    <h2>Last quest</h2>
+    <div class="quest" id="quest">No quest yet. Start watching, then open a quest in your game.</div>
+  </section>
+
+  <details class="panel">
+    <summary>Settings</summary>
+    <label>Screen to watch <select id="display"></select></label>
+    <label>Check every <select id="interval">
+      <option value="2000">2 seconds</option>
+      <option value="3000" selected>3 seconds</option>
+      <option value="5000">5 seconds</option>
+    </select></label>
+    <label>Words needed to count as a quest
+      <input id="minWords" type="number" min="5" max="200" step="5" value="25"></label>
+    <label>Volume <input id="volume" type="range" min="0" max="1" step="0.05" value="1"></label>
+  </details>
+
+  <template id="voice-card">
+    <div class="voice-card">
+      <label class="pick"><input type="radio" name="character"> <span class="name"></span></label>
+      <select class="voice-select" aria-label="Voice"></select>
+      <button class="test">Test</button>
+    </div>
+  </template>
+
+  <script src="voices.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

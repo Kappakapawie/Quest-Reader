@@ -6,13 +6,15 @@ changed something future sessions should know about.
 
 ## Project status
 
-- **State:** Brand new. The repository had no code when this file was created
-  (2026-11-10). This file is the first commit.
-- **Purpose:** _Not yet defined by the owner._ The name suggests a reader app
-  for quests (e.g. interactive fiction / quest-style stories), but **don't
-  assume this.** Ask the owner before you pick a direction.
-- **Tech stack:** _Not chosen yet._ When it's decided, record it below under
-  "Architecture" along with the commands to build, test and run.
+- **State:** First working version (v0.1.0). Not yet run inside real
+  Electron on a real desktop; logic is unit-tested and OCR was tested in Node.
+- **Purpose (owner-confirmed):** Desktop app that takes screenshots, detects
+  when there's enough text on screen to be a quest (e.g. a game quest
+  dialog), and reads it aloud. User picks the narrator voice: woman, man or
+  old man.
+- **Tech stack:** Electron + tesseract.js (local OCR, English data bundled via
+  `@tesseract.js-data/eng`) + the free OS voices via the Web Speech API
+  (`speechSynthesis`). Owner chose free voices over paid TTS services.
 
 ## How to work in this repo
 
@@ -32,29 +34,36 @@ changed something future sessions should know about.
 
 ## Architecture
 
-_Empty until code exists._ Fill this in with:
-
-- Directory layout and what each top-level folder holds
-- Key modules/entry points
-- Data model / storage
-- External services or APIs
+- `src/main.js` – Electron main process. Captures the chosen screen with
+  `desktopCapturer` every N seconds, runs OCR, feeds `QuestTracker`, sends
+  found quests to the window over IPC (`quest-found`, `scan-status`).
+- `src/questDetector.js` – pure logic: clean OCR text (drop HUD/menu lines),
+  decide it's a quest (min word count), wait for two matching captures,
+  don't re-read the last 10 quests.
+- `src/preload.js` – `window.questReader` bridge (contextIsolation on).
+- `src/renderer/` – the window. `voices.js` ranks OS voices per character
+  (gender guessed from voice names, "Natural/Neural/Premium" scored higher;
+  old man = male voice, pitch 0.6, rate 0.82). `app.js` speaks sentence by
+  sentence and stores settings in localStorage.
+- No external services; everything runs locally.
 
 ## Commands
 
-_Empty until a stack is chosen._ Fill this in, for example:
-
 ```bash
-# install dependencies
-# run dev server
-# run tests
-# lint / format
+npm install   # install dependencies
+npm start     # run the app (Electron)
+npm test      # unit tests (node:test, files in test/)
 ```
+
+No linter/formatter set up yet.
 
 ## Conventions
 
-- Code style: _to be decided, and enforced with a formatter/linter once chosen_
-- Naming: _to be decided_
-- Tests: _location and framework to be decided_
+- Code style: plain CommonJS JavaScript, no build step, 2-space indent,
+  single quotes.
+- Naming: camelCase files and functions.
+- Tests: `test/*.test.js` with Node's built-in `node:test`. Keep logic in pure
+  modules so it can be tested without Electron.
 
 ## Decisions log
 
@@ -63,6 +72,9 @@ reopen them.
 
 | Date       | Decision                                    | Why                                   |
 |------------|---------------------------------------------|---------------------------------------|
+| 2026-11-10 | Pin `wasm-feature-detect` to 1.8.0 via `overrides` | 1.10.0 uses `import.source` syntax that Node 22 / Electron can't parse, which breaks tesseract.js |
+| 2026-11-10 | Free OS voices (Web Speech API), not paid TTS | Owner's choice; no API key or cost |
+| 2026-11-10 | Electron desktop app, quests found by OCR of screenshots | Owner's choice |
 | 2026-11-10 | Created CLAUDE.md as shared session memory  | Owner asked for a handoff file for future sessions |
 
 ## Session handoff notes
@@ -70,5 +82,10 @@ reopen them.
 Leave short notes for the next session: what you finished, what's half-done,
 and any gotchas. Newest first. Delete notes once they're no longer relevant.
 
-- **2026-11-10:** Repo initialized with this CLAUDE.md only. Next step: the
-  owner decides the app's purpose and tech stack.
+- **2026-11-10:** Built v0.1.0 with the voice picker (woman / man / old man).
+  Electron's binary couldn't download in the cloud sandbox, so the app hasn't
+  been launched in Electron yet; owner should run `npm start` and report
+  back. Known gaps: the app's own window is on screen and gets OCR'd too
+  (re-reads are prevented by the "already read" check); no capture-region
+  picker; no installer/packaging yet. Windows' built-in voices sound robotic –
+  see README for better ones.

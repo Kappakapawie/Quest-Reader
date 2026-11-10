@@ -1,0 +1,31 @@
+{
+  "name": "quest-reader",
+  "version": "0.1.0",
+  "description": "Desktop app that spots quest text on your screen and reads it aloud",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test \"test/**/*.test.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kappakapawie/Quest-Reader.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kappakapawie/Quest-Reader/issues"
+  },
+  "homepage": "https://github.com/Kappakapawie/Quest-Reader#readme",
+  "dependencies": {
+    "@tesseract.js-data/eng": "^1.0.0",
+    "tesseract.js": "^7.0.0"
+  },
+  "devDependencies": {
+    "electron": "^45.2.3"
+  },
+  "private": true,
+  "overrides": {
+    "wasm-feature-detect": "1.8.0"
+  }
+}

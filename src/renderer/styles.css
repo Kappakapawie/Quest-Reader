@@ -1,0 +1,75 @@
+:root {
+  --bg: #1b1712;
+  --panel: #262019;
+  --line: #3d342a;
+  --text: #efe6d6;
+  --muted: #a89a85;
+  --accent: #d9a441;
+  --accent-text: #1b1712;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 16px;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+h1 { font-size: 20px; margin: 0 0 12px; color: var(--accent); }
+h2 { font-size: 14px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 6px; }
+.status { margin: 0; font-size: 13px; color: var(--muted); }
+.status.on { color: #8fd18f; }
+.status.error { color: #ff8a7a; }
+.hint { margin: 0 0 10px; font-size: 13px; color: var(--muted); }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.voices { display: grid; gap: 8px; }
+.voice-card {
+  display: grid;
+  grid-template-columns: 96px 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.voice-card.selected { border-color: var(--accent); }
+.pick { display: flex; gap: 6px; align-items: center; font-weight: 600; cursor: pointer; }
+
+select, input[type=number], button {
+  font: inherit;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 5px 8px;
+  min-width: 0;
+}
+button { cursor: pointer; }
+button:hover:not(:disabled) { border-color: var(--accent); }
+button:disabled { opacity: .5; cursor: default; }
+button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; }
+
+.buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+
+.quest {
+  white-space: pre-wrap;
+  max-height: 240px;
+  overflow-y: auto;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+details summary { cursor: pointer; font-weight: 600; }
+details label { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 10px; }
